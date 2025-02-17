@@ -10,11 +10,11 @@ volatile int flag_r = 0;
 volatile int flag_g = 0;
 
 void btn_callback(uint gpio, uint32_t events) {
-  if (events == 0x4) { 
-    if (gpio == BTN_PIN_R)
-      flag_r = 1;
-    else if (gpio == BTN_PIN_G)
-      flag_g = 1;
+  if (events == 0x4 && gpio == BTN_PIN_R) { 
+    flag_r = 1;
+  }
+  else if (events == 0x8 && gpio == BTN_PIN_G){
+    flag_g = 1;
   }
 }
 
@@ -34,7 +34,7 @@ int main() {
                                      &btn_callback);
 
 
-  gpio_set_irq_enabled(BTN_PIN_G, GPIO_IRQ_EDGE_FALL, true);
+  gpio_set_irq_enabled(BTN_PIN_G, GPIO_IRQ_EDGE_RISE, true);
 
   gpio_init(LED_PIN_G);
   gpio_set_dir(LED_PIN_G,GPIO_OUT);
